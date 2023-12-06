@@ -193,12 +193,14 @@ document.addEventListener('DOMContentLoaded', function () {
       //     console.log(error);
       //   });
       let idUserLogged = localStorage.getItem('loggedIDUser');
-        const {data} = await axios({
-          url: 'https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users/' + idUserLogged,
-          method: 'GET',
-        });
-        userInfo = data
-        console.log(userInfo);
+      const { data } = await axios({
+        url:
+          'https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users/' +
+          idUserLogged,
+        method: 'GET',
+      });
+      userInfo = data;
+      console.log(userInfo);
       //Start Ngay gio
       // Định dạng ngày
       const currentDate = new Date();
@@ -218,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
           password: userInfo.password,
           fullname: userInfo.fullname,
           phone: userInfo.phonenumber,
-          address: userInfo.address,
           email: userInfo.email,
+          address: userInfo.address,
         },
         date: formattedDate,
         id: generateProductId(), // Điều chỉnh id theo logic của bạn
@@ -299,7 +301,13 @@ function addDatatoHTML(billData) {
           <p class="product">${productNames.join(' ,<br>')}</p>
           <p class="price">$${formatPrice(item.totalprice)}</p>
           <p class="date">${item.date}</p>
-          <p class="status">${item.status == 0 ? 'Đợi xử lý' : item.status == 1 ? 'Đã xử lý' : 'Đã huỷ đơn'}</p>
+          <p class="status">${
+            item.status == 0
+              ? 'Đợi xử lý'
+              : item.status == 1
+              ? 'Đã xử lý'
+              : 'Đã huỷ đơn'
+          }</p>
         `;
 
         listBillHTML.appendChild(newItem);
@@ -364,7 +372,7 @@ btnClear.addEventListener('click', () => {
 let $a = document.querySelector.bind(document);
 const getValueInput = () => {
   let fullName = $a('#fullname').value;
-  let phoneNumber = $a('#phonenumber').value;
+  let phoneNumber = $a('#phone').value;
   let address = $a('#address').value;
   let email = $a('#email').value;
   return {
@@ -377,7 +385,7 @@ const getValueInput = () => {
 
 const fullNameInput = $a('#fullname');
 const phoneNumberInput = $a('#phone');
-const addressInput = $a('#address');
+const addressInput = $a('#adress');
 const emailInput = $a('#email');
 let idUserLogged = localStorage.getItem('loggedIDUser');
 const getDataInfo = (id) => {

@@ -380,63 +380,103 @@ function validateForm() {
 
   return true;
 }
-
 form.addEventListener('submit', function (e) {
   e.preventDefault();
 
   if (validateForm()) {
-    let promise = axios({
-      url: 'https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users',
-      method: 'POST',
-      data: {
-        username: userName.value,
-        password: passWord.value,
-        fullname: fullName.value,
-        phonenumber: phone.value,
-        email: email.value,
-        type: 'User',
-      },
-    });
-
-    // Lưu đối tượng JSON vào localStorage
-    localStorage.setItem(
-      userName.value,
-      JSON.stringify({
-        username: userName.value,
-        password: passWord.value,
-        fullname: fullName.value,
-        phonenumber: phone.value,
-        email: email.value,
-        type: 'user',
-      })
-    );
-
-    promise
+    // Kiểm tra tên đăng nhập đã tồn tại
+    axios
+      .get('https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users')
       .then((response) => {
-        console.log(response.data);
+        const users = response.data;
 
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Đăng ký thành công',
-          showConfirmButton: false,
-          timer: 1000,
-        });
+        const isUsernameTaken = users.some(
+          (user) => user.username === userName.value
+        );
+        const isEmailTaken = users.some((user) => user.email === email.value);
+        const isPhoneTaken = users.some(
+          (user) => user.phonenumber === phone.value
+        );
 
-        setTimeout(() => {
-          window.location.href = '/login.html';
-        }, 1000);
+        if (isUsernameTaken || isEmailTaken || isPhoneTaken) {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Đăng ký thất bại. Vui lòng thử lại!',
+            showConfirmButton: false,
+            timer: 900,
+          });
+        }
+
+        if (isUsernameTaken) {
+          showError(userName, 'Tên đăng nhập đã tồn tại');
+        }
+
+        if (isEmailTaken) {
+          showError(email, 'Email đã tồn tại');
+        }
+
+        if (isPhoneTaken) {
+          showError(phone, 'Số điện thoại đã tồn tại');
+        }
+
+        // Nếu không tồn tại thông tin trùng lặp, tiến hành đăng ký
+        if (!isUsernameTaken && !isEmailTaken && !isPhoneTaken) {
+          // Thực hiện lưu dữ liệu trên Axios
+          axios
+            .post('https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users', {
+              username: userName.value,
+              password: passWord.value,
+              fullname: fullName.value,
+              phonenumber: phone.value,
+              address: address.value,
+              email: email.value,
+              type: 'User',
+            })
+            .then((response) => {
+              console.log(response.data);
+
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Đăng ký thành công',
+                showConfirmButton: false,
+                timer: 1500,
+              });
+
+              setTimeout(() => {
+                window.location.href = '/login.html';
+              }, 1500);
+            })
+            .catch((error) => {
+              console.error('Đăng ký thất bại:', error);
+
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Đăng ký thất bại. Vui lòng thử lại!',
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            });
+
+          // Lưu dữ liệu vào LocalStorage
+          localStorage.setItem(
+            userName.value,
+            JSON.stringify({
+              username: userName.value,
+              password: passWord.value,
+              fullname: fullName.value,
+              phone: phone.value,
+              address: address.value,
+              email: email.value,
+              type: 'User',
+            })
+          );
+        }
       })
       .catch((error) => {
-        console.error('Đăng ký thất bại:', error);
-
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Đăng ký thất bại. Vui lòng thử lại!',
-          showConfirmButton: false,
-          timer: 1000,
-        });
+        console.error('Lỗi khi kiểm tra trùng lặp:', error);
       });
   }
 });

@@ -352,7 +352,9 @@ $a('#myModalPerson').addEventListener('click', (e) => {
       const idPerson = e.target.getAttribute('idperson');
       updatePerson(idPerson);
       $a('#iconClose').click();
-      resetForm();
+      setTimeout(() => {
+        resetForm();
+      }, 1500);
 
       break;
   }
@@ -420,14 +422,14 @@ document.addEventListener('click', function (event) {
 $a('#searchPerson').addEventListener('input', searchPerson);
 
 //add image
-function previewImage(input) {
-  var file = input.files[0];
-  if (file) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      document.getElementById('picture-preview').src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-    //    onchange="previewImage(this)"
-  }
-}
+// function previewImage(input) {
+//   var file = input.files[0];
+//   if (file) {
+//     var reader = new FileReader();
+//     reader.onload = function (e) {
+//       document.getElementById('picture-preview').src = e.target.result;
+//     };
+//     reader.readAsDataURL(file);
+//     //    onchange="previewImage(this)"
+//   }
+// }

@@ -58,17 +58,7 @@ function getValueInput() {
   const phoneNumber = $a('#phoneNumberPerson').value;
   const Email = $a('#emailPerson').value;
   const typePerson = $a('#typePerson').value;
-  localStorage.setItem(
-    userName.value,
-    JSON.stringify({
-      username: userName.value,
-      password: passWord.value,
-      fullname: fullName.value,
-      phonenumber: phone.value,
-      email: email.value,
-      type: 'user',
-    })
-  );
+
   isValidPerson = [
     checkEmpty(userName, 'Vui lòng không để  trống!', '#tb-namePerson'),
     checkEmpty(passWord, 'Vui lòng không để  trống!', '#tb-passwordPerson'),
@@ -83,7 +73,7 @@ function getValueInput() {
       '#tb-phonenumberPerson'
     ),
   ];
-  let InfoValue = {
+  const InfoValue = {
     username: userName,
     password: passWord,
     fullname: fullName,
@@ -93,10 +83,7 @@ function getValueInput() {
   };
   return InfoValue;
 }
-function validateAndBlur() {
-  validateInput(this);
-  this.blur();
-}
+
 //addperson
 function addPerson(data) {
   let promise = api.addPerson(data);
@@ -162,12 +149,6 @@ export function deletePerson(id) {
 
 // Edit person
 export function infoEditPerson(person) {
-  // const fields = ['name', 'password', 'fullname', 'email', 'type'];
-
-  // fields.forEach((field) => {
-  //   console.log(field);
-  //   $a(`#${field}Person`).value = person[field];
-  // });
   $a('#namePerson').value = person.username;
   $a('#passwordPerson').value = person.password;
   $a('#fullnamePerson').value = person.fullname;
@@ -227,6 +208,7 @@ export function updatePerson(id) {
           Info.email,
           Info.type
         );
+        console.log(person);
       }
 
       let promise = api.editPerson(id, person);

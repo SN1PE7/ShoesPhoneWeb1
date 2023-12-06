@@ -46,7 +46,7 @@
 // // Xy ly local stoge
 // function performLogin(username, password) {
 //     var user = localStorage.getItem(username);
-  
+
 //     if (username === "" || password === "") {
 //       Swal.fire({
 //         position: "center",
@@ -88,7 +88,6 @@
 //       }
 //     }
 //   }
-  
 
 // form.addEventListener("submit", function (e) {
 //   e.preventDefault();
@@ -107,7 +106,7 @@
 //   } else {
 //     //=== Xu ly api tai day ===, xoa ham perdormLogin vi no luu vao localstore
 //     performLogin(username.value, password.value);
-   
+
 //     // Reset giá trị trường username và password
 //     username.value = "";
 //     password.value = "";
@@ -216,9 +215,9 @@ form.addEventListener('submit', function (e) {
   e.preventDefault();
   let isEmptyError =
     checkEmptyError(usernameInput) || checkEmptyError(passwordInput);
-  let isUsernameLengthError = checkLengthError(usernameInput, 2, 8);
+  let isUsernameLengthError = checkLengthError(usernameInput, 2, 16);
   let isPasswordLengthError = checkLengthError(passwordInput, 3, 10);
-if (isEmptyError || isUsernameLengthError || isPasswordLengthError) {
+  if (isEmptyError || isUsernameLengthError || isPasswordLengthError) {
     Swal.fire({
       position: 'center',
       icon: 'error',
