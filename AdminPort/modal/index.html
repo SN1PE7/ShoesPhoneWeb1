@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #uploadInput {
+      display: none;
+    }
+
+    #uploadLabel {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <script src="https://unpkg.com/@cloudinary/url-gen@1.0.0/dist/cloudinary-url-gen.js"></script>
+</head>
+<body>
+  <input type="file" id="uploadInput" accept="image/*">
+  <label for="uploadInput" id="uploadLabel">Choose Image</label>
+
+  <div id="result"></div>
+
+  <script>
+    const cloudinary = new cloudinary.Cloudinary({ cloud: { cloudName: 'dnltiwxvo' } });
+
+    async function uploadImageAndGetUrl(file) {
+      try {
+        const response = await cloudinary.uploader.upload(file, { upload_preset: 'your_upload_preset' });
+        return response.secure_url;
+      } catch (error) {
+        throw new Error(`Error uploading image to Cloudinary: ${error.message}`);
+      }
+    }
+
+    async function sendDataToMockAPI(data) {
+      const apiUrl = 'https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs';
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error sending data to MockAPI: ${response.statusText}`);
+        }
+
+        return response.json();
+      } catch (error) {
+        throw new Error(`Error sending data to MockAPI: ${error.message}`);
+      }
+    }
+
+    document.getElementById('uploadInput').addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      
+      try {
+        const imageUrl = await uploadImageAndGetUrl(file);
+        
+        const newData = {
+          name: 'New Data',
+          image: imageUrl,
+          // Add other data fields as needed
+        };
+
+        const response = await sendDataToMockAPI(newData);
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `<p>Data sent to MockAPI:</p><img src="${imageUrl}" alt="Uploaded Image">`;
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    });
+  </script>
+</body>
+</html>
