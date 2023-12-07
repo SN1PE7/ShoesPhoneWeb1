@@ -1,4 +1,3 @@
-
 //============== GET DATA FORM PRODUCTS.JSON ==============
 let products = null;
 fetch("https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs")
@@ -80,7 +79,13 @@ const addDatatoHTML = () => {
   handlePage();
 };
 //======== END  GET DATA FORM PRODUCTS.JSON ========
-
+function checkRole() {
+  var type = localStorage.getItem("userType");
+  if (type != null) {
+    if (type === "admin") window.location.href=("../AdminPort/index.html");
+    else alert("You dont have permisison to access this site");
+  } else alert("You dont have permisison to access this site");
+}
 //===== Xu ly gio hang Cart =========
 function addCart($idProduct, event) {
   event.preventDefault();
@@ -128,9 +133,13 @@ function addCarttoHTML() {
             <div class="price">$${formatPrice(product.price)} </div>
           </div>
           <div class="quantity">
-            <button class="oper" onclick="changeQuantity(${product.id},'-')">-</button>
+            <button class="oper" onclick="changeQuantity(${
+              product.id
+            },'-')">-</button>
             <span class="value">${product.quantity}</span>
-            <button class="oper" onclick="changeQuantity(${product.id},'+')">+</button>
+            <button class="oper" onclick="changeQuantity(${
+              product.id
+            },'+')">+</button>
           </div>`;
         listCartHTML.appendChild(newCart);
         totalQuantity = totalQuantity + product.quantity;
@@ -284,7 +293,9 @@ function showProduct(productFilter) {
         <h3 class="title">${product.name}</h3>
         <div class="prices">
           <span class="prices__new">$${formatPrice(product.price)}</span>
-          <span class="prices__old">$${formatPrice(formatOldPrice(product.price))}</span>
+          <span class="prices__old">$${formatPrice(
+            formatOldPrice(product.price)
+          )}</span>
         </div>
         <div class="rating">
           <i class="fa-solid fa-star icon"></i>
@@ -363,7 +374,8 @@ document.addEventListener("DOMContentLoaded", function () {
   headerAdminOut.addEventListener("click", function () {
     // Xóa thông tin đăng nhập khỏi localStorage
     localStorage.removeItem("loggedInUser");
-    
+    localStorage.removeItem("userType");
+
     // Ẩn phần tử headerAdminOut và hiển thị phần tử mặc định
     headerAdminOut.style.display = "none";
     headerAdminText.innerHTML = `<a style="color: #fff; cursor: pointer;" href="/login.html">Login</a>`; // Hoặc đặt giá trị mặc định khác
@@ -381,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function formatPrice(number) {
-  return new Intl.NumberFormat('en-US').format(number);
+  return new Intl.NumberFormat("en-US").format(number);
 }
 
 function formatOldPrice(number) {

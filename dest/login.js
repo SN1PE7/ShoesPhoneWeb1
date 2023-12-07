@@ -115,32 +115,32 @@
 
 //============ TÂY LOGIN
 const $a = document.querySelector.bind(document);
-const usernameInput = $a('#username');
-const passwordInput = $a('#password');
-const form = document.querySelector('form');
+const usernameInput = $a("#username");
+const passwordInput = $a("#password");
+const form = document.querySelector("form");
 
 function showError(input, message) {
   let parent = input.parentElement;
-  let small = parent.querySelector('small');
-  parent.classList.add('error');
+  let small = parent.querySelector("small");
+  parent.classList.add("error");
   small.innerText = message;
 }
 
 function showSuccess(input) {
   let parent = input.parentElement;
-  let small = parent.querySelector('small');
-  parent.classList.remove('error');
-  small.innerText = '';
+  let small = parent.querySelector("small");
+  parent.classList.remove("error");
+  small.innerText = "";
 }
 
 function isEmpty(value) {
-  return value.trim() === '';
+  return value.trim() === "";
 }
 
 function checkEmptyError(input) {
   input.value = input.value.trim();
   if (isEmpty(input.value)) {
-    showError(input, 'Không được để trống!');
+    showError(input, "Không được để trống!");
     return true;
   } else {
     showSuccess(input);
@@ -166,8 +166,8 @@ function checkLengthError(input, min, max) {
 function performLogin(username, password) {
   // Lấy danh sách người dùng từ API hoặc localStorage
   let promise = axios({
-    url: 'https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users',
-    method: 'GET',
+    url: "https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/users",
+    method: "GET",
   });
 
   promise.then((data) => {
@@ -182,17 +182,18 @@ function performLogin(username, password) {
             statusLogin: true,
             userType: users[i].type,
           };
-          localStorage.setItem('Login', JSON.stringify(status));
-          localStorage.setItem('loggedInUser', username);
-          localStorage.setItem('loggedIDUser', users[i].id);
+          localStorage.setItem("Login", JSON.stringify(status));
+          localStorage.setItem("loggedInUser", username);
+          localStorage.setItem("loggedIDUser", users[i].id);
+          localStorage.setItem("userType", users[i].type);
           Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Đăng nhập thành công',
+            position: "center",
+            icon: "success",
+            title: "Đăng nhập thành công",
             showConfirmButton: false,
             timer: 1000,
           });
-          window.location.href = '../index.html';
+          window.location.href = "../index.html";
 
           // Kiểm tra loại tài khoản và chuyển hướng
           checkUserTypeAndRedirect(users[i].type);
@@ -203,15 +204,15 @@ function performLogin(username, password) {
 
     // Nếu không tìm thấy người dùng hoặc mật khẩu không đúng
     Swal.fire({
-      position: 'center',
-      icon: 'error',
-      title: 'Tài khoản hoặc mật khẩu không đúng',
+      position: "center",
+      icon: "error",
+      title: "Tài khoản hoặc mật khẩu không đúng",
       showConfirmButton: false,
-      timer: 1000,
+      timer: 1500,
     });
   });
 }
-form.addEventListener('submit', function (e) {
+form.addEventListener("submit", function (e) {
   e.preventDefault();
   let isEmptyError =
     checkEmptyError(usernameInput) || checkEmptyError(passwordInput);
@@ -219,9 +220,9 @@ form.addEventListener('submit', function (e) {
   let isPasswordLengthError = checkLengthError(passwordInput, 3, 10);
   if (isEmptyError || isUsernameLengthError || isPasswordLengthError) {
     Swal.fire({
-      position: 'center',
-      icon: 'error',
-      title: 'Vui lòng kiểm tra lại!',
+      position: "center",
+      icon: "error",
+      title: "Vui lòng kiểm tra lại!",
       showConfirmButton: false,
       timer: 1000,
     });
@@ -230,19 +231,20 @@ form.addEventListener('submit', function (e) {
     performLogin(usernameInput.value, passwordInput.value);
 
     // Reset giá trị trường username và password
-    usernameInput.value = '';
-    passwordInput.value = '';
+    usernameInput.value = "";
+    passwordInput.value = "";
   }
 });
+
 // kiem tra user hay admin
 function checkUserTypeAndRedirect(userType) {
-  if (userType === 'admin') {
+  if (userType === "admin") {
     // Chuyển hướng tới trang admin
-    window.location.href = '../AdminPort/index.html';
-  } else if (userType === 'user') {
+    window.location.href = "../index.html";
+  } else if (userType === "user") {
     // Chuyển hướng tới trang user
-    window.location.href = '../index.html';
+    window.location.href = "../index.html";
   } else {
-    console.log('User type not recognized or not logged in.');
+    console.log("User type not recognized or not logged in.");
   }
 }

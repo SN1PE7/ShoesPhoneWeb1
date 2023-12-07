@@ -369,7 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     headerAdminOut.style.display = "none";
   }
-
 });
 
 //Ham fomat
