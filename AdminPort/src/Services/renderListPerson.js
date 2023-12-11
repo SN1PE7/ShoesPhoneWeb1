@@ -33,8 +33,16 @@ function renderPerson(data) {
   tablePerson.innerHTML = content;
 }
 function innerPerson(account) {
-  const { id, username, password, fullname, email, type, phonenumber } =
-    account;
+  const {
+    id,
+    username,
+    password,
+    fullname,
+    email,
+    type,
+    phonenumber,
+    address,
+  } = account;
   return `<tr>
   <td>${id}</td>
   <td>${username}</td>
@@ -42,6 +50,7 @@ function innerPerson(account) {
   <td>${fullname}</td>
   <td>${email}</td>
   <td>${phonenumber}</td>
+  <td>${address}</td>
    <td>${type}</td>
    <td>
    <button id="editBtn" idPerson="${id}"  style="border:none; background-color:transparent; padding-left:5px; font-size:22px;" class="fa fa-pencil"></button> 
@@ -57,6 +66,7 @@ function getValueInput() {
   const fullName = $a('#fullnamePerson').value;
   const phoneNumber = $a('#phoneNumberPerson').value;
   const Email = $a('#emailPerson').value;
+  const address = $a('#addressPerson').value;
   const typePerson = $a('#typePerson').value;
 
   isValidPerson = [
@@ -65,11 +75,17 @@ function getValueInput() {
     checkNumber(passWord, 'Vui lòng nhập giá là số', '#tb-passwordPerson'),
     checkEmpty(fullName, 'Vui lòng không để  trống!', '#tb-fullnamePerson'),
     checkEmpty(Email, 'Vui lòng không để  trống!', '#tb-emailPerson'),
+    checkEmpty(address, 'Vui lòng không để  trống!', '#tb-addressPerson'),
     checkEmail(Email, 'Email không đúng định dạng ', '#tb-emailPerson'),
     checkEmpty(typePerson, 'Vui lòng không để  trống!', '#tb-typeacount'),
     checkEmpty(
       phoneNumber,
       'Vui lòng không để  trống!',
+      '#tb-phonenumberPerson'
+    ),
+    checkNumber(
+      phoneNumber,
+      'Số điện thoại phải là số !',
       '#tb-phonenumberPerson'
     ),
   ];
@@ -79,6 +95,7 @@ function getValueInput() {
     fullname: fullName,
     phonenumber: phoneNumber,
     email: Email,
+    address: address,
     type: typePerson,
   };
   return InfoValue;
@@ -116,6 +133,7 @@ export function getInfoPerson() {
       Info.fullname,
       Info.phonenumber,
       Info.email,
+      Info.address,
       Info.type
     );
     addPerson(person);
@@ -154,6 +172,7 @@ export function infoEditPerson(person) {
   $a('#fullnamePerson').value = person.fullname;
   $a('#emailPerson').value = person.email;
   $a('#phoneNumberPerson').value = person.phonenumber;
+  $a('#addressPerson').value = person.address;
   $a('#typePerson').value = person.type;
 
   let buttonEdit = $a('#btnEditPerson');
@@ -206,6 +225,7 @@ export function updatePerson(id) {
           Info.fullname,
           Info.phonenumber,
           Info.email,
+          Info.address,
           Info.type
         );
         console.log(person);

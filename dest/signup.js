@@ -429,8 +429,8 @@ form.addEventListener('submit', function (e) {
               password: passWord.value,
               fullname: fullName.value,
               phonenumber: phone.value,
-              address: address.value,
               email: email.value,
+              address: address.value,
               type: 'User',
             })
             .then((response) => {
@@ -468,8 +468,9 @@ form.addEventListener('submit', function (e) {
               password: passWord.value,
               fullname: fullName.value,
               phone: phone.value,
-              address: address.value,
               email: email.value,
+              address: address.value,
+
               type: 'User',
             })
           );

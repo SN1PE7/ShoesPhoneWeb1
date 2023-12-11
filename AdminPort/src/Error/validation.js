@@ -29,21 +29,15 @@ export const checkEmail = (value, message, notiID) => {
   }
 };
 export const checkNumber = (value, message, notiID) => {
-  if (value == '') {
+  const phoneRegex = /^\+?[0-9]+$/;
+
+  if (!phoneRegex.test(value)) {
     $a(notiID).innerHTML = message;
     $a(notiID).style.display = 'block';
     return false;
   } else {
-    const regex = /^\d+$/; // Chuỗi regex chỉ chấp nhận số dương
-
-    if (!regex.test(value)) {
-      $a(notiID).innerHTML = message;
-      $a(notiID).style.display = 'block';
-      return false;
-    } else {
-      $a(notiID).innerHTML = '';
-      $a(notiID).style.display = 'none';
-      return true;
-    }
+    $a(notiID).innerHTML = '';
+    $a(notiID).style.display = 'none';
+    return true;
   }
 };

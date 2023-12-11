@@ -1,11 +1,21 @@
 export default class Person {
-  constructor(id, username, password, fullname, phonenumber, email, type) {
+  constructor(
+    id,
+    username,
+    password,
+    fullname,
+    phonenumber,
+    email,
+    address,
+    type
+  ) {
     this.id = id;
     this.username = username;
     this.password = password;
     this.fullname = fullname;
     this.phonenumber = phonenumber;
     this.email = email;
+    this.address = address;
     this.type = type;
   }
 }

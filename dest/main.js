@@ -1,6 +1,6 @@
 //============== GET DATA FORM PRODUCTS.JSON ==============
 let products = null;
-fetch("https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs")
+fetch('https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs')
   .then((response) => response.json())
   .then((data) => {
     products = data;
@@ -11,26 +11,26 @@ let listCart = [];
 // De sau khi call api ve
 function checkCart() {
   var cookieValue = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("listCart="));
+    .split('; ')
+    .find((row) => row.startsWith('listCart='));
   if (cookieValue) {
     // Sử dụng toàn bộ cookieValue làm dữ liệu JSON
-    listCart = JSON.parse(cookieValue.replace("listCart=", ""));
+    listCart = JSON.parse(cookieValue.replace('listCart=', ''));
   }
 }
 checkCart();
 // add data product to HTML
 const addDatatoHTML = () => {
   //remove datat defautl in html
-  let listProductHTML = document.querySelector(".scproducts__list");
-  listProductHTML.innerHTML = "";
+  let listProductHTML = document.querySelector('.scproducts__list');
+  listProductHTML.innerHTML = '';
   // add new data
   if (products != null) {
     products.forEach((product) => {
-      let newProduct = document.createElement("a");
+      let newProduct = document.createElement('a');
       // id cua moi san pham
-      newProduct.href = "/detail.html?id=" + product.id;
-      newProduct.classList.add("item");
+      newProduct.href = '/detail.html?id=' + product.id;
+      newProduct.classList.add('item');
       newProduct.innerHTML = `
         <div class="img">
         <img src="${product.img}" alt="" />
@@ -80,11 +80,13 @@ const addDatatoHTML = () => {
 };
 //======== END  GET DATA FORM PRODUCTS.JSON ========
 function checkRole() {
-  var type = localStorage.getItem("userType");
+  var type = localStorage.getItem('userType');
   if (type != null) {
-    if (type === "admin") window.location.href=("../AdminPort/index.html");
-    else alert("You dont have permisison to access this site");
-  } else alert("You dont have permisison to access this site");
+    if (type === 'admin') window.location.href = '../AdminPort/index.html';
+    document.querySelector('.header__admin-btn').style.display = 'block';
+    alert('You dont have permisison to access this site');
+    // else alert("You dont have permisison to access this site");
+  } else alert('You dont have permisison to access this site');
 }
 //===== Xu ly gio hang Cart =========
 function addCart($idProduct, event) {
@@ -105,25 +107,25 @@ function addCart($idProduct, event) {
   }
   // i wiwll save datas cart in cookie
   // to save yhis datas cart when i turn of the computer
-  let timeSave = "expries=Thu, 31 Dec 2025 23:59:59 UTC";
+  let timeSave = 'expries=Thu, 31 Dec 2025 23:59:59 UTC';
   document.cookie =
-    "listCart=" + JSON.stringify(listCart) + "; " + timeSave + "; path=/";
+    'listCart=' + JSON.stringify(listCart) + '; ' + timeSave + '; path=/';
   addCarttoHTML();
 }
 
 function addCarttoHTML() {
   //clear data default;
-  let listCartHTML = document.querySelector(".listCart");
-  listCartHTML.innerHTML = "";
+  let listCartHTML = document.querySelector('.listCart');
+  listCartHTML.innerHTML = '';
 
-  let totalHTML = document.querySelector(".totalQuantity");
+  let totalHTML = document.querySelector('.totalQuantity');
   let totalQuantity = 0;
 
   if (listCart) {
     listCart.forEach((product) => {
       if (product) {
-        let newCart = document.createElement("div");
-        newCart.classList.add("item");
+        let newCart = document.createElement('div');
+        newCart.classList.add('item');
         newCart.innerHTML = `
         <div class="img">
         <img src="${product.img}" alt="" />
@@ -153,10 +155,10 @@ addCarttoHTML();
 
 function changeQuantity($idProduct, $type) {
   switch ($type) {
-    case "+":
+    case '+':
       listCart[$idProduct].quantity++;
       break;
-    case "-":
+    case '-':
       listCart[$idProduct].quantity--;
       if (listCart[$idProduct].quantity <= 0) {
         delete listCart[$idProduct];
@@ -166,9 +168,9 @@ function changeQuantity($idProduct, $type) {
       break;
   }
   //save new cookie
-  let timeSave = "expries=Thu, 31 Dec 2025 23:59:59 UTC";
+  let timeSave = 'expries=Thu, 31 Dec 2025 23:59:59 UTC';
   document.cookie =
-    "listCart=" + JSON.stringify(listCart) + "; " + timeSave + "; path=/";
+    'listCart=' + JSON.stringify(listCart) + '; ' + timeSave + '; path=/';
   //reload
   addCarttoHTML();
 }
@@ -180,16 +182,16 @@ let thisPage = 1;
 let limit = 4;
 
 function handlePage() {
-  let list = document.querySelectorAll(".scproducts__list .item");
+  let list = document.querySelectorAll('.scproducts__list .item');
   // Hien thi so luong item da cai dat
   function loadItem() {
     let beginGet = limit * (thisPage - 1);
     let endGet = limit * thisPage - 1;
     list.forEach((item, key) => {
       if (key >= beginGet && key <= endGet) {
-        item.style.display = "block";
+        item.style.display = 'block';
       } else {
-        item.style.display = "none";
+        item.style.display = 'none';
       }
     });
     listPage();
@@ -199,16 +201,16 @@ function handlePage() {
   // Hien thi tong so trang
   function listPage() {
     let count = Math.ceil(list.length / limit);
-    let listPageContainer = document.querySelector(".listPage");
-    listPageContainer.innerHTML = "";
+    let listPageContainer = document.querySelector('.listPage');
+    listPageContainer.innerHTML = '';
 
     // Nut prev
     if (thisPage > 1) {
-      let prev = document.createElement("li");
-      let icon = document.createElement("i");
-      prev.classList.add("fa-solid", "fa-arrow-left");
+      let prev = document.createElement('li');
+      let icon = document.createElement('i');
+      prev.classList.add('fa-solid', 'fa-arrow-left');
       prev.appendChild(icon);
-      prev.addEventListener("click", function () {
+      prev.addEventListener('click', function () {
         changePage(thisPage - 1);
       });
       listPageContainer.appendChild(prev);
@@ -222,11 +224,11 @@ function handlePage() {
 
     // Nut next
     if (thisPage < count) {
-      let next = document.createElement("li");
-      let icon = document.createElement("i");
-      icon.classList.add("fa-solid", "fa-arrow-right");
+      let next = document.createElement('li');
+      let icon = document.createElement('i');
+      icon.classList.add('fa-solid', 'fa-arrow-right');
       next.appendChild(icon);
-      next.addEventListener("click", function () {
+      next.addEventListener('click', function () {
         changePage(thisPage + 1);
       });
       listPageContainer.appendChild(next);
@@ -234,13 +236,13 @@ function handlePage() {
   }
 
   function createPageElement(i) {
-    let newPage = document.createElement("li");
+    let newPage = document.createElement('li');
     newPage.innerText = i;
     if (i === thisPage) {
-      newPage.classList.add("--is-active");
+      newPage.classList.add('--is-active');
     }
     // Sử dụng hàm `changePage` để xử lý sự kiện click
-    newPage.addEventListener("click", function () {
+    newPage.addEventListener('click', function () {
       changePage(i);
     });
     return newPage;
@@ -257,13 +259,13 @@ handlePage();
 //  ======== Ket thuc XU LY PHAN TRANG =======
 
 //==== Bo loc ====
-let list = document.querySelector(".scproducts__list");
-let filter = document.querySelector(".filter");
-let count = document.getElementById("count");
+let list = document.querySelector('.scproducts__list');
+let filter = document.querySelector('.filter');
+let count = document.getElementById('count');
 let productFilter = [];
 let listProducts = [];
 
-fetch("https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs")
+fetch('https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs')
   .then((response) => response.json())
   .then((data) => {
     listProducts = data;
@@ -274,12 +276,12 @@ fetch("https://650f9b0d54d18aabfe9a203b.mockapi.io/api/v1/capstonejs")
 // Ham dat trong fecth de lay api ve
 function showProduct(productFilter) {
   count.innerText = productFilter.length;
-  list.innerHTML = "";
+  list.innerHTML = '';
   productFilter.forEach((product) => {
-    let newProduct = document.createElement("a");
+    let newProduct = document.createElement('a');
     // id cua moi san pham
-    newProduct.href = "/detail.html?id=" + product.id;
-    newProduct.classList.add("item");
+    newProduct.href = '/detail.html?id=' + product.id;
+    newProduct.classList.add('item');
     newProduct.innerHTML = `
         <div class="img">
         <img src="${product.img}" alt="" />
@@ -328,28 +330,28 @@ function showProduct(productFilter) {
   handlePage();
 }
 
-filter.addEventListener("submit", function (event) {
+filter.addEventListener('submit', function (event) {
   event.preventDefault();
   let valueFilter = event.target.elements;
   productFilter = listProducts.filter((item) => {
-    if (valueFilter.category.value != "") {
+    if (valueFilter.category.value != '') {
       if (item.type != valueFilter.category.value) {
         return false;
       }
     }
-    if (valueFilter.name.value != "") {
+    if (valueFilter.name.value != '') {
       if (
         !item.name.toLowerCase().includes(valueFilter.name.value.toLowerCase())
       ) {
         return false;
       }
     }
-    if (valueFilter.minPrice.value != "") {
+    if (valueFilter.minPrice.value != '') {
       if (parseInt(item.price) < parseInt(valueFilter.minPrice.value)) {
         return false;
       }
     }
-    if (valueFilter.maxPrice.value != "") {
+    if (valueFilter.maxPrice.value != '') {
       if (parseInt(item.price) > parseInt(valueFilter.maxPrice.value)) {
         return false;
       }
@@ -357,43 +359,43 @@ filter.addEventListener("submit", function (event) {
 
     return true;
   });
-  valueFilter.category.value = "";
-  valueFilter.name.value = "";
-  valueFilter.minPrice.value = "";
-  valueFilter.maxPrice.value = "";
+  valueFilter.category.value = '';
+  valueFilter.name.value = '';
+  valueFilter.minPrice.value = '';
+  valueFilter.maxPrice.value = '';
 
   showProduct(productFilter);
 });
 //==== End Bo loc ====
 
 // Hienn thi logged
-document.addEventListener("DOMContentLoaded", function () {
-  var headerAdminText = document.querySelector(".header__admin-text");
-  var headerAdminOut = document.querySelector(".header__admin-out");
+document.addEventListener('DOMContentLoaded', function () {
+  var headerAdminText = document.querySelector('.header__admin-text');
+  var headerAdminOut = document.querySelector('.header__admin-out');
 
-  headerAdminOut.addEventListener("click", function () {
+  headerAdminOut.addEventListener('click', function () {
     // Xóa thông tin đăng nhập khỏi localStorage
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("userType");
+    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('userType');
 
     // Ẩn phần tử headerAdminOut và hiển thị phần tử mặc định
-    headerAdminOut.style.display = "none";
+    headerAdminOut.style.display = 'none';
     headerAdminText.innerHTML = `<a style="color: #fff; cursor: pointer;" href="/login.html">Login</a>`; // Hoặc đặt giá trị mặc định khác
-    alert("Đăng xuất thành công");
+    alert('Đăng xuất thành công');
     // Thông báo đăng xuất thành công
   });
 
-  var loggedInUsername = localStorage.getItem("loggedInUser");
+  var loggedInUsername = localStorage.getItem('loggedInUser');
   if (loggedInUsername) {
-    headerAdminText.textContent = "Xin chào, " + loggedInUsername;
-    headerAdminOut.style.display = "block";
+    headerAdminText.textContent = 'Xin chào, ' + loggedInUsername;
+    headerAdminOut.style.display = 'block';
   } else {
-    headerAdminOut.style.display = "none";
+    headerAdminOut.style.display = 'none';
   }
 });
 
 function formatPrice(number) {
-  return new Intl.NumberFormat("en-US").format(number);
+  return new Intl.NumberFormat('en-US').format(number);
 }
 
 function formatOldPrice(number) {
@@ -402,7 +404,7 @@ function formatOldPrice(number) {
 
   // Kiểm tra xem kết quả có phải là một số hợp lệ không
   if (isNaN(result)) {
-    return "Không phải là một số hợp lệ";
+    return 'Không phải là một số hợp lệ';
   }
 
   return result;
